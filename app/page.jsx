@@ -7,8 +7,185 @@ import { Button } from "@/components/ui/button";
 
 const MonacoEditor = dynamic(() => import("react-monaco-editor"), { ssr: false });
 
+// ------------------- FULL QUESTION BANK -------------------
 const LOCAL_QUESTIONS = [
-  // ...All your questions from previous update...
+  {
+    id: "checknumber",
+    title: "CheckNumber",
+    description: "Return true if a string contains any number.",
+    difficulty: 1,
+    template: `package piscine
+
+func CheckNumber(arg string) bool {
+    // Loop through string and check for digits
+}`,
+    validators: [
+      { hint: "Loop through each character of the string." },
+      { hint: "Check if character is between '0' and '9'." },
+      { hint: "Return true if any digit is found, otherwise false." }
+    ]
+  },
+  {
+    id: "only1",
+    title: "Only1",
+    description: "Return true if the string contains exactly one '1'.",
+    difficulty: 1,
+    template: `package piscine
+
+func Only1(s string) bool {
+    // Count '1's in the string
+}`,
+    validators: [
+      { hint: "Loop through string and count '1's." },
+      { hint: "Return true if count is exactly 1, otherwise false." }
+    ]
+  },
+  {
+    id: "onlya",
+    title: "OnlyA",
+    description: "Return true if the string contains only 'a'.",
+    difficulty: 1,
+    template: `package piscine
+
+func OnlyA(s string) bool {
+    // Check if all characters are 'a'
+}`,
+    validators: [
+      { hint: "Loop through string and check each character." },
+      { hint: "Return false if any character is not 'a'." }
+    ]
+  },
+  {
+    id: "onlyb",
+    title: "OnlyB",
+    description: "Return true if the string contains only 'b'.",
+    difficulty: 1,
+    template: `package piscine
+
+func OnlyB(s string) bool {
+    // Check if all characters are 'b'
+}`,
+    validators: [
+      { hint: "Loop through string and check each character." },
+      { hint: "Return false if any character is not 'b'." }
+    ]
+  },
+  {
+    id: "onlyf",
+    title: "OnlyF",
+    description: "Return true if the string contains only 'f'.",
+    difficulty: 1,
+    template: `package piscine
+
+func OnlyF(s string) bool {
+    // Check if all characters are 'f'
+}`,
+    validators: [
+      { hint: "Loop through string and check each character." },
+      { hint: "Return false if any character is not 'f'." }
+    ]
+  },
+  {
+    id: "itoa",
+    title: "Itoa",
+    description: "Convert an integer to a string, handling negative numbers.",
+    difficulty: 2,
+    template: `package piscine
+
+func Itoa(n int) string {
+    // Convert integer to string without using strconv
+}`,
+    validators: [
+      { hint: "Handle negative numbers first." },
+      { hint: "Use division/modulo to extract digits." },
+      { hint: "Convert digits to string and concatenate." },
+      { hint: "Return the final string." }
+    ]
+  },
+  {
+    id: "repeatalpha",
+    title: "RepeatAlpha",
+    description: "Repeat each alphabetical character as many times as its alphabetical index.",
+    difficulty: 2,
+    template: `package piscine
+
+func RepeatAlpha(s string) string {
+    // Repeat letters according to their index in alphabet
+}`,
+    validators: [
+      { hint: "Use rune values to get alphabetical index." },
+      { hint: "Loop through each character." },
+      { hint: "Repeat character index number of times." },
+      { hint: "Concatenate to result string." }
+    ]
+  },
+  {
+    id: "fromto",
+    title: "FromTo",
+    description: "Return a formatted string showing the range from the first to the second integer.",
+    difficulty: 2,
+    template: `package piscine
+
+func FromTo(a int, b int) string {
+    // Return numbers from a to b with formatting
+}`,
+    validators: [
+      { hint: "Use a loop from a to b." },
+      { hint: "Prepend 0 if number < 10." },
+      { hint: "Separate numbers with comma and space." },
+      { hint: "Return final string with newline." }
+    ]
+  },
+  {
+    id: "fishandchips",
+    title: "FishAndChips",
+    description: "Return 'fish' if divisible by 2, 'chips' if divisible by 3, or both if divisible by 2 and 3.",
+    difficulty: 2,
+    template: `package piscine
+
+func FishAndChips(n int) string {
+    // Determine divisibility and return result
+}`,
+    validators: [
+      { hint: "Check divisibility by 2 and 3." },
+      { hint: "Return appropriate string." },
+      { hint: "Return error if negative or non-divisible." }
+    ]
+  },
+  {
+    id: "findprevprime",
+    title: "FindPrevPrime",
+    description: "Return the first prime number less than or equal to the given integer.",
+    difficulty: 3,
+    template: `package piscine
+
+func FindPrevPrime(nb int) int {
+    // Find previous prime number
+}`,
+    validators: [
+      { hint: "Loop down from nb to 2." },
+      { hint: "Check if number is prime." },
+      { hint: "Return the first prime found." },
+      { hint: "Return 0 if none found." }
+    ]
+  },
+  {
+    id: "iscapitalized",
+    title: "IsCapitalized",
+    description: "Return true if every word starts with an uppercase letter or a non-alphabetic character.",
+    difficulty: 3,
+    template: `package piscine
+
+func IsCapitalized(s string) bool {
+    // Check each word for capitalization
+}`,
+    validators: [
+      { hint: "Split string into words." },
+      { hint: "Check first character of each word." },
+      { hint: "Return false if any lowercase word found." },
+      { hint: "Return true if all words pass." }
+    ]
+  }
 ];
 
 // ------------------- PAGE COMPONENT -------------------
@@ -39,7 +216,7 @@ export default function Page() {
 
     const text = code.toLowerCase();
     let feedback = [];
-    let passed = text.includes("return");
+    let passed = text.includes("return"); // basic check
 
     if (!passed) feedback.push("Your code is missing a return statement.");
 
@@ -134,7 +311,7 @@ export default function Page() {
 
       {/* Footer */}
       <div className="text-center text-xs sm:text-sm text-gray-500 mt-6">
-        &copy; 2025 <a href="https://www.github.com/1magnova" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">Mag</a>. All rights reserved.
+        &copy; 2025 <a href="https://www.github.com/1magnova" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">Mag and the Piscine Clan</a>. All rights reserved.
       </div>
     </div>
   );
