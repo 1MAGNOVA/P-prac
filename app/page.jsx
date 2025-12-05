@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Moon, Sun, CheckCircle, XCircle, Terminal, Cpu, Code2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const MonacoEditor = dynamic(() => import("react-monaco-editor"), { ssr: false });
 
@@ -189,8 +191,6 @@ func IsCapitalized(s string) bool {
 ];
 
 // ------------------- LANGUAGE DETECTION -------------------
-// ------------------- LANGUAGE DETECTION -------------------
-// ------------------- LANGUAGE DETECTION -------------------
 const detectLanguage = (code) => {
   const trimmed = code.trim();
   console.log("Detecting language for:", trimmed.substring(0, 20) + "...");
@@ -254,6 +254,114 @@ const formatCodeLogic = (code, language) => {
   }).join("\n");
 };
 
+// ------------------- ANIMATED COMPONENTS -------------------
+const Loader = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-md"
+  >
+    <div className="relative">
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        className="w-24 h-24 border-t-4 border-b-4 border-indigo-500 rounded-full"
+      />
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-2 w-20 h-20 border-r-4 border-l-4 border-purple-500 rounded-full"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+        className="absolute inset-0 flex items-center justify-center"
+      >
+        <Cpu className="text-white w-8 h-8" />
+      </motion.div>
+    </div>
+    <motion.h2
+      animate={{ opacity: [0.5, 1, 0.5] }}
+      transition={{ duration: 1.5, repeat: Infinity }}
+      className="mt-8 text-2xl font-mono text-indigo-400 font-bold"
+    >
+      COMPILING...
+    </motion.h2>
+    <div className="mt-2 text-sm text-gray-400 font-mono">
+      Running tests against your code
+    </div>
+  </motion.div>
+);
+
+const ResultModal = ({ result, onClose, theme }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+    onClick={onClose}
+  >
+    <motion.div
+      initial={{ scale: 0.8, y: 50 }}
+      animate={{ scale: 1, y: 0 }}
+      exit={{ scale: 0.8, y: 50 }}
+      onClick={(e) => e.stopPropagation()}
+      className={`w-full max-w-lg p-8 rounded-2xl shadow-2xl border-2 ${result.passed
+        ? "bg-slate-900 border-green-500/50 shadow-green-500/20"
+        : "bg-slate-900 border-red-500/50 shadow-red-500/20"
+        }`}
+    >
+      <div className="flex flex-col items-center text-center">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 15 }}
+          className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${result.passed ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+            }`}
+        >
+          {result.passed ? <CheckCircle size={48} /> : <XCircle size={48} />}
+        </motion.div>
+
+        <h2 className={`text-3xl font-bold mb-2 ${result.passed ? "text-green-400" : "text-red-400"}`}>
+          {result.passed ? "TEST PASSED!" : "TEST FAILED"}
+        </h2>
+
+        <p className="text-slate-300 mb-6 text-lg">
+          {result.passed
+            ? `Great job! You've earned +10 points.`
+            : "Your code didn't pass all checks. Keep trying!"}
+        </p>
+
+        {!result.passed && result.feedback.length > 0 && (
+          <div className="w-full bg-slate-950/50 rounded-lg p-4 mb-6 text-left border border-slate-800">
+            <h3 className="text-red-400 font-mono text-sm mb-2 flex items-center gap-2">
+              <Terminal size={14} /> ERROR LOG:
+            </h3>
+            <ul className="space-y-1">
+              {result.feedback.map((msg, i) => (
+                <li key={i} className="text-slate-400 text-sm font-mono flex items-start gap-2">
+                  <span className="text-red-500 mt-1">›</span> {msg}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <Button
+          onClick={onClose}
+          className={`w-full py-6 text-lg font-bold transition-all hover:scale-105 ${result.passed
+            ? "bg-green-600 hover:bg-green-500 text-white shadow-lg shadow-green-900/20"
+            : "bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-900/20"
+            }`}
+        >
+          {result.passed ? "CONTINUE" : "TRY AGAIN"}
+        </Button>
+      </div>
+    </motion.div>
+  </motion.div>
+);
+
 // ------------------- PAGE COMPONENT -------------------
 export default function Page() {
   const [questions, setQuestions] = useState([...LOCAL_QUESTIONS]);
@@ -267,6 +375,9 @@ export default function Page() {
   const [autoDetect, setAutoDetect] = useState(true);
   const [editorInstance, setEditorInstance] = useState(null);
   const [monacoInstance, setMonacoInstance] = useState(null);
+  const [theme, setTheme] = useState("light");
+  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState(null); // { passed: boolean, score: number, feedback: string[] }
 
   const selectedQuestion = questions[questionIndex];
 
@@ -321,20 +432,27 @@ export default function Page() {
   const runChecker = () => {
     if (!selectedQuestion) return;
 
-    const text = code.toLowerCase();
-    let feedback = [];
-    let passed = text.includes("return"); // basic check
+    setIsLoading(true);
 
-    if (!passed) feedback.push("Your code is missing a return statement.");
+    // Simulate processing time for the "crazy" loader effect
+    setTimeout(() => {
+      const text = code.toLowerCase();
+      let feedback = [];
+      let passed = text.includes("return"); // basic check
 
-    if (passed) {
-      setScore(score + 10);
-      if (!completed.includes(selectedQuestion.id)) setCompleted([...completed, selectedQuestion.id]);
-      alert(`✅ Passed! Score: ${score + 10}`);
-      nextQuestion();
-    } else {
-      alert(`❌ Not Passed! Score: ${score}\nIssues:\n- ${feedback.join("\n- ")}`);
-    }
+      if (!passed) feedback.push("Your code is missing a return statement.");
+
+      if (passed) {
+        setScore(score + 10);
+        if (!completed.includes(selectedQuestion.id)) setCompleted([...completed, selectedQuestion.id]);
+        setResult({ passed: true, score: score + 10, feedback: [] });
+        nextQuestion();
+      } else {
+        setResult({ passed: false, score: score, feedback });
+      }
+
+      setIsLoading(false);
+    }, 1500);
   };
 
   const handleFormatCode = () => {
@@ -362,9 +480,27 @@ export default function Page() {
   const progressPercent = Math.round(((questionIndex + 1) / questions.length) * 100);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center px-2 sm:px-6 md:px-8 py-6">
-      <Card className="shadow-xl p-4 sm:p-6 md:p-8 rounded-xl w-full max-w-7xl bg-white">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center text-indigo-700">Piscine Practice App</h1>
+    <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
+      <AnimatePresence>
+        {isLoading && <Loader key="loader" />}
+        {result && <ResultModal key="result" result={result} theme={theme} onClose={() => setResult(null)} />}
+      </AnimatePresence>
+
+      <Card className={`shadow-xl p-4 sm:p-6 md:p-8 rounded-xl w-full max-w-7xl transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white'}`}>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className={`text-2xl sm:text-3xl font-bold text-center flex items-center gap-3 ${theme === 'dark' ? 'text-indigo-400' : 'text-indigo-700'}`}>
+            <Code2 className="w-8 h-8" />
+            Piscine Practice App
+          </h1>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className={`rounded-full p-2 transition-transform hover:scale-110 ${theme === 'dark' ? 'text-yellow-400 hover:bg-slate-800' : 'text-gray-600 hover:bg-gray-200'}`}
+          >
+            {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
+          </Button>
+        </div>
 
         <div className="w-full bg-gray-200 rounded-full h-3 sm:h-4 mb-6">
           <div className="bg-indigo-600 h-3 sm:h-4 rounded-full transition-all duration-300" style={{ width: `${progressPercent}%` }} />
@@ -372,14 +508,14 @@ export default function Page() {
 
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
           {/* LEFT PANEL */}
-          <div className="lg:w-1/3 p-3 sm:p-4 border rounded-lg bg-indigo-50 flex flex-col gap-3">
-            <div className="text-md sm:text-lg font-semibold text-indigo-900">
+          <div className={`lg:w-1/3 p-3 sm:p-4 border rounded-lg flex flex-col gap-3 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-indigo-50 border-gray-200'}`}>
+            <div className={`text-md sm:text-lg font-semibold ${theme === 'dark' ? 'text-indigo-300' : 'text-indigo-900'}`}>
               Question {questionIndex + 1}: {selectedQuestion.title}
             </div>
             <div className="text-sm sm:text-base text-gray-800">{selectedQuestion.description}</div>
             <div className="mt-2">
               <strong>Hints:</strong>
-              <ul className="list-disc list-inside text-xs sm:text-sm text-gray-700">
+              <ul className={`list-disc list-inside text-xs sm:text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-gray-700'}`}>
                 {selectedQuestion.validators.map((v, i) => <li key={i}>{v.hint}</li>)}
               </ul>
             </div>
@@ -394,17 +530,17 @@ export default function Page() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
               <label className="text-sm sm:text-base font-medium">Name:</label>
               <input
-                className="border p-2 rounded-lg flex-1 min-w-[150px]"
+                className={`border p-2 rounded-lg flex-1 min-w-[150px] transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-gray-300'}`}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              <div className="ml-auto font-medium text-indigo-700">Score: {score}</div>
+              <div className={`ml-auto font-medium ${theme === 'dark' ? 'text-indigo-400' : 'text-indigo-700'}`}>Score: {score}</div>
             </div>
 
             <div className="flex items-center gap-2 mb-2">
-              <label className="text-sm font-medium text-gray-700">Language:</label>
+              <label className="text-sm font-medium">Language:</label>
               <select
-                className="border p-1 rounded text-sm bg-white"
+                className={`border p-1 rounded text-sm transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-gray-300'}`}
                 value={autoDetect ? "auto" : language}
                 onChange={(e) => {
                   if (e.target.value === "auto") {
@@ -434,7 +570,7 @@ export default function Page() {
                 width="100%"
                 height="100%"
                 language={language}
-                theme="vs-dark"
+                theme={theme === 'dark' ? "vs-dark" : "light"}
                 value={code}
                 onChange={(v) => setCode(v)}
                 editorDidMount={(editor, monaco) => {
