@@ -3,3 +3,46 @@
 [00:00:10.954] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:01:52.991] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:05:09.360] Server  LOG      ✓ Compiled in 291ms
+[00:09:19.793] Server  LOG      ✓ Compiled in 135ms
+[00:09:19.901] Browser ERROR   ./app/page.jsx:199:20
+Ecmascript file had an error
+  197 |   const [score, setScore] = useState(0);
+  198 |   const [username, setUsername] = useState("Learner");
+> 199 |   const [username, setUsername] = useState("Learner");
+      |                    ^^^^^^^^^^^
+  200 |   const [completed, setCompleted] = useState([]);
+  201 |   const [language, setLanguage] = useState("go");
+  202 |   const [autoDetect, setAutoDetect] = useState(true);
+
+the name `setUsername` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/page.jsx [Client Component Browser]
+    ./app/page.jsx [Server Component]
+
+  Client Component SSR:
+    ./app/page.jsx [Client Component SSR]
+    ./app/page.jsx [Server Component]
+[00:09:19.901] Browser ERROR   ./app/page.jsx:199:10
+Ecmascript file had an error
+  197 |   const [score, setScore] = useState(0);
+  198 |   const [username, setUsername] = useState("Learner");
+> 199 |   const [username, setUsername] = useState("Learner");
+      |          ^^^^^^^^
+  200 |   const [completed, setCompleted] = useState([]);
+  201 |   const [language, setLanguage] = useState("go");
+  202 |   const [autoDetect, setAutoDetect] = useState(true);
+
+the name `username` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./app/page.jsx [Client Component Browser]
+    ./app/page.jsx [Server Component]
+
+  Client Component SSR:
+    ./app/page.jsx [Client Component SSR]
+    ./app/page.jsx [Server Component]
+[00:09:31.316] Server  LOG      ✓ Compiled in 53ms
+[00:09:38.586] Server  LOG      ✓ Compiled in 45ms

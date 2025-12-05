@@ -188,6 +188,19 @@ func IsCapitalized(s string) bool {
   }
 ];
 
+// ------------------- LANGUAGE DETECTION -------------------
+const detectLanguage = (code) => {
+  const trimmed = code.trim();
+  if (trimmed.startsWith("<html") || trimmed.startsWith("<!DOCTYPE html")) return "html";
+  if (trimmed.includes("package main") || trimmed.includes("func main")) return "go";
+  if (trimmed.includes("def ") && trimmed.includes(":")) return "python";
+  if (trimmed.includes("import React") || trimmed.includes("console.log") || trimmed.includes("const ") || trimmed.includes("let ")) return "javascript";
+  if (trimmed.includes("#include <") || trimmed.includes("int main(")) return "cpp";
+  if (trimmed.includes("public class") || trimmed.includes("System.out.println")) return "java";
+  if (trimmed.includes("body {") || trimmed.includes("div {") || trimmed.includes("margin:")) return "css";
+  return "go"; // Default fallback
+};
+
 // ------------------- PAGE COMPONENT -------------------
 export default function Page() {
   const [questions, setQuestions] = useState([...LOCAL_QUESTIONS]);
@@ -197,6 +210,8 @@ export default function Page() {
   const [score, setScore] = useState(0);
   const [username, setUsername] = useState("Learner");
   const [completed, setCompleted] = useState([]);
+  const [language, setLanguage] = useState("go");
+  const [autoDetect, setAutoDetect] = useState(true);
 
   const selectedQuestion = questions[questionIndex];
 
@@ -209,7 +224,19 @@ export default function Page() {
 
   useEffect(() => localStorage.setItem("pp_score", score), [score]);
   useEffect(() => localStorage.setItem("pp_user", username), [username]);
-  useEffect(() => setCode(selectedQuestion.template), [questionIndex, selectedQuestion]);
+  useEffect(() => {
+    setCode(selectedQuestion.template);
+    if (autoDetect) {
+      setLanguage(detectLanguage(selectedQuestion.template));
+    }
+  }, [questionIndex, selectedQuestion]);
+
+  useEffect(() => {
+    if (autoDetect) {
+      const detected = detectLanguage(code);
+      if (detected !== language) setLanguage(detected);
+    }
+  }, [code, autoDetect, language]);
 
   const runChecker = () => {
     if (!selectedQuestion) return;
@@ -231,6 +258,12 @@ export default function Page() {
   };
 
   const handleFormatCode = () => {
+    // Only format C-style languages with braces
+    if (!["go", "javascript", "java", "cpp", "css"].includes(language)) {
+      alert(`Formatting is not supported for ${language} yet.`);
+      return;
+    }
+
     const lines = code.split("\n");
     let indentLevel = 0;
     const indentStr = "\t";
@@ -241,7 +274,7 @@ export default function Page() {
 
       // Calculate indentation for the current line
       let currentIndent = indentLevel;
-      
+
       // Decrease indent if line starts with closing bracket
       if (trimmed.startsWith("}") || trimmed.startsWith(")") || trimmed.startsWith("]")) {
         currentIndent = Math.max(0, currentIndent - 1);
@@ -320,11 +353,39 @@ export default function Page() {
               <div className="ml-auto font-medium text-indigo-700">Score: {score}</div>
             </div>
 
+            <div className="flex items-center gap-2 mb-2">
+              <label className="text-sm font-medium text-gray-700">Language:</label>
+              <select
+                className="border p-1 rounded text-sm bg-white"
+                value={autoDetect ? "auto" : language}
+                onChange={(e) => {
+                  if (e.target.value === "auto") {
+                    setAutoDetect(true);
+                  } else {
+                    setAutoDetect(false);
+                    setLanguage(e.target.value);
+                  }
+                }}
+              >
+                <option value="auto">Auto-detect</option>
+                <option value="go">Go</option>
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+              </select>
+              <span className="text-xs text-gray-500 ml-2">
+                (Current: {language.toUpperCase()})
+              </span>
+            </div>
+
             <div className="h-[300px] sm:h-[350px] md:h-[400px] border rounded-lg overflow-hidden shadow-sm">
               <MonacoEditor
                 width="100%"
                 height="100%"
-                language="go"
+                language={language}
                 theme="vs-dark"
                 value={code}
                 onChange={(v) => setCode(v)}
