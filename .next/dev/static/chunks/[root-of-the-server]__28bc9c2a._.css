@@ -471,6 +471,10 @@
     container: card-header / inline-size;
   }
 
+  .static {
+    position: static;
+  }
+
   .col-start-2 {
     grid-column-start: 2;
   }

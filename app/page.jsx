@@ -189,15 +189,26 @@ func IsCapitalized(s string) bool {
 ];
 
 // ------------------- LANGUAGE DETECTION -------------------
+// ------------------- LANGUAGE DETECTION -------------------
+// ------------------- LANGUAGE DETECTION -------------------
 const detectLanguage = (code) => {
   const trimmed = code.trim();
-  if (trimmed.startsWith("<html") || trimmed.startsWith("<!DOCTYPE html")) return "html";
-  if (trimmed.includes("package main") || trimmed.includes("func main")) return "go";
-  if (trimmed.includes("def ") && trimmed.includes(":")) return "python";
-  if (trimmed.includes("import React") || trimmed.includes("console.log") || trimmed.includes("const ") || trimmed.includes("let ")) return "javascript";
-  if (trimmed.includes("#include <") || trimmed.includes("int main(")) return "cpp";
-  if (trimmed.includes("public class") || trimmed.includes("System.out.println")) return "java";
-  if (trimmed.includes("body {") || trimmed.includes("div {") || trimmed.includes("margin:")) return "css";
+  console.log("Detecting language for:", trimmed.substring(0, 20) + "...");
+
+  // HTML: Starts with < and has a tag-like structure, or contains common tags
+  if (trimmed.match(/^<[a-z!]/i) || trimmed.includes("</div>") || trimmed.includes("</body>") || trimmed.includes("</p>") || trimmed.includes("</span>")) {
+    console.log("Detected: html");
+    return "html";
+  }
+
+  if (trimmed.includes("package main") || trimmed.includes("func main") || trimmed.includes("fmt.Print")) return "go";
+  if (trimmed.includes("def ") || trimmed.includes("import ") || trimmed.includes("print(") || trimmed.includes("class ")) return "python";
+  if (trimmed.includes("import React") || trimmed.includes("console.log") || trimmed.includes("const ") || trimmed.includes("let ") || trimmed.includes("function ") || trimmed.includes("=>")) return "javascript";
+  if (trimmed.includes("#include <") || trimmed.includes("int main(") || trimmed.includes("std::")) return "cpp";
+  if (trimmed.includes("public class") || trimmed.includes("System.out.println") || trimmed.includes("public static void main")) return "java";
+  if (trimmed.includes("body {") || trimmed.includes("div {") || trimmed.includes("margin:") || trimmed.includes("color:")) return "css";
+
+  console.log("Detected: go (fallback)");
   return "go"; // Default fallback
 };
 
@@ -212,6 +223,8 @@ export default function Page() {
   const [completed, setCompleted] = useState([]);
   const [language, setLanguage] = useState("go");
   const [autoDetect, setAutoDetect] = useState(true);
+  const [editorInstance, setEditorInstance] = useState(null);
+  const [monacoInstance, setMonacoInstance] = useState(null);
 
   const selectedQuestion = questions[questionIndex];
 
@@ -237,6 +250,26 @@ export default function Page() {
       if (detected !== language) setLanguage(detected);
     }
   }, [code, autoDetect, language]);
+
+  useEffect(() => {
+    if (editorInstance && monacoInstance) {
+      const model = editorInstance.getModel();
+      if (model) {
+        monacoInstance.editor.setModelLanguage(model, language);
+      }
+
+      // Force update options to ensure auto-closing works for the new language
+      editorInstance.updateOptions({
+        autoClosingBrackets: "always",
+        autoClosingQuotes: "always",
+        autoIndent: "full",
+        formatOnType: true,
+        formatOnPaste: true,
+        matchBrackets: "always",
+        autoSurround: "languageDefined"
+      });
+    }
+  }, [language, editorInstance, monacoInstance]);
 
   const runChecker = () => {
     if (!selectedQuestion) return;
@@ -389,6 +422,10 @@ export default function Page() {
                 theme="vs-dark"
                 value={code}
                 onChange={(v) => setCode(v)}
+                editorDidMount={(editor, monaco) => {
+                  setEditorInstance(editor);
+                  setMonacoInstance(monaco);
+                }}
                 options={{
                   automaticLayout: true,
                   minimap: { enabled: false },
