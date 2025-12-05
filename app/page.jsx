@@ -512,10 +512,10 @@ export default function Page() {
             <div className={`text-md sm:text-lg font-semibold ${theme === 'dark' ? 'text-indigo-300' : 'text-indigo-900'}`}>
               Question {questionIndex + 1}: {selectedQuestion.title}
             </div>
-            <div className="text-sm sm:text-base text-gray-800">{selectedQuestion.description}</div>
+            <div className={`text-sm sm:text-base ${theme === 'dark' ? 'text-slate-300' : 'text-gray-800'}`}>{selectedQuestion.description}</div>
             <div className="mt-2">
-              <strong>Hints:</strong>
-              <ul className={`list-disc list-inside text-xs sm:text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-gray-700'}`}>
+              <strong className={theme === 'dark' ? 'text-slate-200' : 'text-gray-900'}>Hints:</strong>
+              <ul className={`list-disc list-inside text-xs sm:text-sm ${theme === 'dark' ? 'text-slate-300' : 'text-gray-700'}`}>
                 {selectedQuestion.validators.map((v, i) => <li key={i}>{v.hint}</li>)}
               </ul>
             </div>
@@ -528,7 +528,7 @@ export default function Page() {
           {/* RIGHT PANEL */}
           <div className="lg:w-2/3 flex flex-col gap-3">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-              <label className="text-sm sm:text-base font-medium">Name:</label>
+              <label className={`text-sm sm:text-base font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-gray-700'}`}>Name:</label>
               <input
                 className={`border p-2 rounded-lg flex-1 min-w-[150px] transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500' : 'bg-white border-gray-300'}`}
                 value={username}
@@ -538,7 +538,7 @@ export default function Page() {
             </div>
 
             <div className="flex items-center gap-2 mb-2">
-              <label className="text-sm font-medium">Language:</label>
+              <label className={`text-sm font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-gray-700'}`}>Language:</label>
               <select
                 className={`border p-1 rounded text-sm transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-gray-300'}`}
                 value={autoDetect ? "auto" : language}
@@ -570,7 +570,7 @@ export default function Page() {
                 width="100%"
                 height="100%"
                 language={language}
-                theme={theme === 'dark' ? "vs-dark" : "light"}
+                theme="vs-dark"
                 value={code}
                 onChange={(v) => setCode(v)}
                 editorDidMount={(editor, monaco) => {
