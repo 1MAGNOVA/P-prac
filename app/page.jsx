@@ -230,7 +230,41 @@ export default function Page() {
     }
   };
 
-  const formatCode = () => setCode(code.split("\n").map(line => line.trim()).join("\n"));
+  const handleFormatCode = () => {
+    const lines = code.split("\n");
+    let indentLevel = 0;
+    const indentStr = "\t";
+
+    const formattedLines = lines.map((line) => {
+      const trimmed = line.trim();
+      if (!trimmed) return "";
+
+      // Calculate indentation for the current line
+      let currentIndent = indentLevel;
+      
+      // Decrease indent if line starts with closing bracket
+      if (trimmed.startsWith("}") || trimmed.startsWith(")") || trimmed.startsWith("]")) {
+        currentIndent = Math.max(0, currentIndent - 1);
+      }
+
+      const formatted = indentStr.repeat(currentIndent) + trimmed;
+
+      // Calculate indent for the next line
+      const openBraces = (trimmed.match(/\{/g) || []).length;
+      const closeBraces = (trimmed.match(/\}/g) || []).length;
+      const openParens = (trimmed.match(/\(/g) || []).length;
+      const closeParens = (trimmed.match(/\)/g) || []).length;
+      const openBrackets = (trimmed.match(/\[/g) || []).length;
+      const closeBrackets = (trimmed.match(/\]/g) || []).length;
+
+      const netChange = (openBraces - closeBraces) + (openParens - closeParens) + (openBrackets - closeBrackets);
+      indentLevel = Math.max(0, indentLevel + netChange);
+
+      return formatted;
+    });
+
+    setCode(formattedLines.join("\n"));
+  };
   const nextQuestion = () => setQuestionIndex((i) => (i + 1) % questions.length);
   const resetQuestion = () => setCode(selectedQuestion.template);
   const resetAll = () => {
@@ -294,13 +328,24 @@ export default function Page() {
                 theme="vs-dark"
                 value={code}
                 onChange={(v) => setCode(v)}
-                options={{ automaticLayout: true, minimap: { enabled: false }, fontSize: 14 }}
+                options={{
+                  automaticLayout: true,
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  autoClosingBrackets: "always",
+                  autoClosingQuotes: "always",
+                  autoIndent: "full",
+                  formatOnType: true,
+                  formatOnPaste: true,
+                  tabSize: 4,
+                  scrollBeyondLastLine: false,
+                }}
               />
             </div>
 
             <div className="flex flex-wrap gap-2 sm:gap-3 mt-2 justify-start sm:justify-start">
               <Button className="bg-green-500 hover:bg-green-600 text-white" onClick={runChecker}>Run Checker</Button>
-              <Button className="bg-blue-500 hover:bg-blue-600 text-white" onClick={formatCode}>Format Code</Button>
+              <Button className="bg-blue-500 hover:bg-blue-600 text-white" onClick={handleFormatCode}>Format Code</Button>
               <Button className="bg-yellow-400 hover:bg-yellow-500 text-white" onClick={resetQuestion}>Reset Question</Button>
               <Button className="bg-red-500 hover:bg-red-600 text-white" onClick={resetAll}>Reset All</Button>
               <Button className="bg-indigo-500 hover:bg-indigo-600 text-white" onClick={nextQuestion}>Next Question</Button>
