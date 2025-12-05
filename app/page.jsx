@@ -212,6 +212,48 @@ const detectLanguage = (code) => {
   return "go"; // Default fallback
 };
 
+// ------------------- FORMATTER LOGIC -------------------
+const formatCodeLogic = (code, language) => {
+  // Simple indentation-based formatter for C-style languages
+  if (!["go", "javascript", "java", "cpp", "css", "html"].includes(language)) {
+    return code; // Return original if not supported
+  }
+
+  const lines = code.split("\n");
+  let indentLevel = 0;
+  const indentStr = "\t";
+
+  return lines.map((line) => {
+    const trimmed = line.trim();
+    if (!trimmed) return "";
+
+    // Decrease indent if line starts with closing bracket
+    let currentIndent = indentLevel;
+    if (trimmed.startsWith("}") || trimmed.startsWith(")") || trimmed.startsWith("]") || trimmed.startsWith("</")) {
+      currentIndent = Math.max(0, currentIndent - 1);
+    }
+
+    const formatted = indentStr.repeat(currentIndent) + trimmed;
+
+    // Calculate indent for the next line
+    const openBraces = (trimmed.match(/\{/g) || []).length;
+    const closeBraces = (trimmed.match(/\}/g) || []).length;
+    const openParens = (trimmed.match(/\(/g) || []).length;
+    const closeParens = (trimmed.match(/\)/g) || []).length;
+    const openBrackets = (trimmed.match(/\[/g) || []).length;
+    const closeBrackets = (trimmed.match(/\]/g) || []).length;
+
+    // HTML-ish tag detection (very basic)
+    const openTags = (trimmed.match(/<[a-zA-Z0-9]+[^>]*>/g) || []).filter(t => !t.includes("/>") && !t.startsWith("</")).length;
+    const closeTags = (trimmed.match(/<\/[a-zA-Z0-9]+>/g) || []).length;
+
+    const netChange = (openBraces - closeBraces) + (openParens - closeParens) + (openBrackets - closeBrackets) + (openTags - closeTags);
+    indentLevel = Math.max(0, indentLevel + netChange);
+
+    return formatted;
+  }).join("\n");
+};
+
 // ------------------- PAGE COMPONENT -------------------
 export default function Page() {
   const [questions, setQuestions] = useState([...LOCAL_QUESTIONS]);
@@ -262,11 +304,16 @@ export default function Page() {
       editorInstance.updateOptions({
         autoClosingBrackets: "always",
         autoClosingQuotes: "always",
+        autoClosingTags: true, // For HTML
         autoIndent: "full",
         formatOnType: true,
         formatOnPaste: true,
         matchBrackets: "always",
-        autoSurround: "languageDefined"
+        autoSurround: "languageDefined",
+        renderValidationDecorations: "on", // Show redlines
+        suggest: {
+          showWords: false, // Don't show generic words, only semantic suggestions
+        }
       });
     }
   }, [language, editorInstance, monacoInstance]);
@@ -291,45 +338,13 @@ export default function Page() {
   };
 
   const handleFormatCode = () => {
-    // Only format C-style languages with braces
-    if (!["go", "javascript", "java", "cpp", "css"].includes(language)) {
-      alert(`Formatting is not supported for ${language} yet.`);
-      return;
+    if (editorInstance) {
+      editorInstance.getAction('editor.action.formatDocument').run();
+    } else {
+      // Fallback if editor instance not ready
+      const formatted = formatCodeLogic(code, language);
+      setCode(formatted);
     }
-
-    const lines = code.split("\n");
-    let indentLevel = 0;
-    const indentStr = "\t";
-
-    const formattedLines = lines.map((line) => {
-      const trimmed = line.trim();
-      if (!trimmed) return "";
-
-      // Calculate indentation for the current line
-      let currentIndent = indentLevel;
-
-      // Decrease indent if line starts with closing bracket
-      if (trimmed.startsWith("}") || trimmed.startsWith(")") || trimmed.startsWith("]")) {
-        currentIndent = Math.max(0, currentIndent - 1);
-      }
-
-      const formatted = indentStr.repeat(currentIndent) + trimmed;
-
-      // Calculate indent for the next line
-      const openBraces = (trimmed.match(/\{/g) || []).length;
-      const closeBraces = (trimmed.match(/\}/g) || []).length;
-      const openParens = (trimmed.match(/\(/g) || []).length;
-      const closeParens = (trimmed.match(/\)/g) || []).length;
-      const openBrackets = (trimmed.match(/\[/g) || []).length;
-      const closeBrackets = (trimmed.match(/\]/g) || []).length;
-
-      const netChange = (openBraces - closeBraces) + (openParens - closeParens) + (openBrackets - closeBrackets);
-      indentLevel = Math.max(0, indentLevel + netChange);
-
-      return formatted;
-    });
-
-    setCode(formattedLines.join("\n"));
   };
   const nextQuestion = () => setQuestionIndex((i) => (i + 1) % questions.length);
   const resetQuestion = () => setCode(selectedQuestion.template);
@@ -425,6 +440,23 @@ export default function Page() {
                 editorDidMount={(editor, monaco) => {
                   setEditorInstance(editor);
                   setMonacoInstance(monaco);
+
+                  // Register formatter for supported languages
+                  const languages = ["go", "javascript", "java", "cpp", "css", "html"];
+                  languages.forEach(lang => {
+                    monaco.languages.registerDocumentFormattingEditProvider(lang, {
+                      provideDocumentFormattingEdits: (model) => {
+                        const text = model.getValue();
+                        const formatted = formatCodeLogic(text, lang);
+                        return [
+                          {
+                            range: model.getFullModelRange(),
+                            text: formatted,
+                          },
+                        ];
+                      },
+                    });
+                  });
                 }}
                 options={{
                   automaticLayout: true,
