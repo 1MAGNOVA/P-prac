@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"app/page.jsx -> react-monaco-editor\":{\"id\":\"app/page.jsx -> react-monaco-editor\",\"files\":[\"static/css/_app-pages-browser_node_modules_react-monaco-editor_lib_index_js.css\",\"static/chunks/_app-pages-browser_node_modules_react-monaco-editor_lib_index_js.js\"]}}"
