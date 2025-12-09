@@ -294,7 +294,7 @@ const Loader = () => (
   </motion.div>
 );
 
-const ResultModal = ({ result, onClose, theme }) => (
+const ResultModal = ({ result, onClose }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -365,11 +365,20 @@ const ResultModal = ({ result, onClose, theme }) => (
 // ------------------- PAGE COMPONENT -------------------
 export default function Page() {
   const [questions, setQuestions] = useState([...LOCAL_QUESTIONS]);
-  const [source, setSource] = useState("Local");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [code, setCode] = useState(questions[0].template);
-  const [score, setScore] = useState(0);
-  const [username, setUsername] = useState("Learner");
+  const [score, setScore] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return parseInt(localStorage.getItem("pp_score") || "0");
+    }
+    return 0;
+  });
+  const [username, setUsername] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("pp_user") || "Learner";
+    }
+    return "Learner";
+  });
   const [completed, setCompleted] = useState([]);
   const [language, setLanguage] = useState("go");
   const [autoDetect, setAutoDetect] = useState(true);
@@ -381,26 +390,26 @@ export default function Page() {
 
   const selectedQuestion = questions[questionIndex];
 
-  useEffect(() => {
-    const savedScore = parseInt(localStorage.getItem("pp_score") || "0");
-    const savedUser = localStorage.getItem("pp_user") || "Learner";
-    setScore(savedScore);
-    setUsername(savedUser);
-  }, []);
-
   useEffect(() => localStorage.setItem("pp_score", score), [score]);
   useEffect(() => localStorage.setItem("pp_user", username), [username]);
-  useEffect(() => {
-    setCode(selectedQuestion.template);
-    if (autoDetect) {
-      setLanguage(detectLanguage(selectedQuestion.template));
-    }
-  }, [questionIndex, selectedQuestion]);
 
+  // Update code template when question changes
+  useEffect(() => {
+    const newTemplate = selectedQuestion.template;
+    const newLanguage = autoDetect ? detectLanguage(newTemplate) : language;
+    setCode(newTemplate);
+    if (autoDetect) {
+      setLanguage(newLanguage);
+    }
+  }, [questionIndex, selectedQuestion.template, autoDetect, language]);
+
+  // Auto-detect language on code change
   useEffect(() => {
     if (autoDetect) {
       const detected = detectLanguage(code);
-      if (detected !== language) setLanguage(detected);
+      if (detected !== language) {
+        setLanguage(detected);
+      }
     }
   }, [code, autoDetect, language]);
 
@@ -483,7 +492,7 @@ export default function Page() {
     <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
       <AnimatePresence>
         {isLoading && <Loader key="loader" />}
-        {result && <ResultModal key="result" result={result} theme={theme} onClose={() => setResult(null)} />}
+        {result && <ResultModal key="result" result={result} onClose={() => setResult(null)} />}
       </AnimatePresence>
 
       <Card className={`shadow-xl p-4 sm:p-6 md:p-8 rounded-xl w-full max-w-7xl transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white'}`}>
@@ -519,7 +528,6 @@ export default function Page() {
                 {selectedQuestion.validators.map((v, i) => <li key={i}>{v.hint}</li>)}
               </ul>
             </div>
-            <div className="mt-2 text-xs italic text-gray-500">Source: {source}</div>
             <div className="mt-2 text-xs text-green-600">
               Completed: {completed.length}/{questions.length}
             </div>
