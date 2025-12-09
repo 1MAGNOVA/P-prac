@@ -397,12 +397,13 @@ export default function Page() {
     }
   }, [questionIndex, selectedQuestion]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (autoDetect) {
       const detected = detectLanguage(code);
       if (detected !== language) setLanguage(detected);
     }
-  }, [code, autoDetect, language]);
+  }, [code, autoDetect]);
 
   useEffect(() => {
     if (editorInstance && monacoInstance) {
