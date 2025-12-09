@@ -1,307 +1,34 @@
-[00:00:03.022] Server  LOG      ✓ Ready in 2.7s
-[00:00:14.200] Server  LOG      ○ Compiling / ...
-[00:00:29.856] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:30.090] Browser LOG     Detecting language for: package piscine
+[00:00:02.346] Server  LOG      ✓ Ready in 1722ms
+[00:00:07.166] Server  LOG      ○ Compiling / ...
+[00:00:21.225] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:21.759] Browser LOG     Detecting language for: package piscine
 
 fun...
-[00:00:30.090] Browser LOG     Detected: go (fallback)
-[00:00:30.090] Browser LOG     Detecting language for: package piscine
+[00:00:21.759] Browser LOG     Detected: go (fallback)
+[00:00:21.759] Browser LOG     Detecting language for: package piscine
 
 fun...
-[00:00:30.090] Browser LOG     Detected: go (fallback)
-[00:00:40.697] Browser LOG     Detecting language for: package piscine
+[00:00:21.759] Browser LOG     Detected: go (fallback)
+[00:03:49.929] Server  LOG      ✓ Compiled in 474ms
+[00:03:52.079] Browser ERROR   uncaughtError: ReferenceError: source is not defined
+[00:04:07.420] Server  LOG      ✓ Compiled in 540ms
+[00:04:07.457] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:04:11.443] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:12.887] Browser LOG     Detecting language for: package piscine
 
 fun...
-[00:00:40.697] Browser LOG     Detected: go (fallback)
-[00:00:43.899] Browser LOG     Detecting language for: package piscine
+[00:04:12.887] Browser LOG     Detected: go (fallback)
+[00:04:12.887] Browser LOG     Detecting language for: package piscine
 
 fun...
-[00:00:43.899] Browser LOG     Detected: go (fallback)
-[00:00:53.530] Browser LOG     Detecting language for: package piscine
+[00:04:12.887] Browser LOG     Detected: go (fallback)
+[00:05:48.085] Server  LOG      ✓ Compiled in 146ms
+[00:06:10.612] Server  LOG      ✓ Compiled in 525ms
+[00:06:11.707] Browser LOG     Detecting language for: package piscine
 
 fun...
-[00:00:53.530] Browser LOG     Detected: go (fallback)
-[00:00:54.865] Browser LOG     Detecting language for: package piscine
+[00:06:11.707] Browser LOG     Detected: go (fallback)
+[00:06:11.707] Browser LOG     Detecting language for: package piscine
 
 fun...
-[00:00:54.866] Browser LOG     Detected: go (fallback)
-[00:00:57.280] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:00:57.280] Browser LOG     Detected: go (fallback)
-[00:00:59.662] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:00:59.662] Browser LOG     Detected: go (fallback)
-[00:00:59.785] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:00:59.785] Browser LOG     Detected: go (fallback)
-[00:01:01.018] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:01.018] Browser LOG     Detected: go (fallback)
-[00:01:01.249] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:01.249] Browser LOG     Detected: go (fallback)
-[00:01:01.249] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:01.249] Browser LOG     Detected: go (fallback)
-[00:01:01.636] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:01.637] Browser LOG     Detected: go (fallback)
-[00:01:01.637] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:01.637] Browser LOG     Detected: go (fallback)
-[00:01:01.815] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:01.816] Browser LOG     Detected: go (fallback)
-[00:01:02.067] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:03.284] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:05.366] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:05.713] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:01:33.850] Browser LOG     Detecting language for: ...
-[00:01:33.850] Browser LOG     Detected: go (fallback)
-[00:01:33.850] Browser LOG     Detecting language for: ...
-[00:01:33.850] Browser LOG     Detected: go (fallback)
-[00:01:35.079] Browser LOG     Detecting language for: <...
-[00:01:35.079] Browser LOG     Detected: go (fallback)
-[00:01:35.721] Browser LOG     Detecting language for: <!...
-[00:01:35.721] Browser LOG     Detected: html
-[00:01:35.721] Browser LOG     Detecting language for: <!...
-[00:01:35.721] Browser LOG     Detected: html
-[00:01:38.820] Browser LOG     Detecting language for: <...
-[00:01:38.820] Browser LOG     Detected: go (fallback)
-[00:01:38.820] Browser LOG     Detecting language for: <...
-[00:01:38.820] Browser LOG     Detected: go (fallback)
-[00:01:39.045] Browser LOG     Detecting language for: ...
-[00:01:39.045] Browser LOG     Detected: go (fallback)
-[00:02:36.054] Browser LOG     Detecting language for: ...
-[00:02:36.054] Browser LOG     Detected: go (fallback)
-[00:02:36.054] Browser LOG     Detecting language for: ...
-[00:02:36.054] Browser LOG     Detected: go (fallback)
-[00:07:18.311] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:07:18.311] Browser LOG     Detected: go (fallback)
-[00:07:18.311] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:07:18.311] Browser LOG     Detected: go (fallback)
-[00:10:53.921] Browser ERROR   ./app/page.jsx
-Error:   × Expression expected
-     ╭─[/home/anasmasama/Desktop/Projects/P-prac/app/page.jsx:483:1]
- 480 │   const progressPercent = Math.round(((questionIndex + 1) / questions.length) * 100);
- 481 │ 
- 482 │   return (
- 483 │   return (
-     ·   ──────
- 484 │     <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
- 485 │       <AnimatePresence>
- 486 │         {isLoading && <Loader key="loader" />}
-     ╰────
-
-Caused by:
-    Syntax Error
-
-Import trace for requested module:
-./app/page.jsx
-[00:10:54.482] Server  ERROR    ⨯ ./app/page.jsx
-Error:   × Expression expected
-     ╭─[/home/anasmasama/Desktop/Projects/P-prac/app/page.jsx:483:1]
- 480 │   const progressPercent = Math.round(((questionIndex + 1) / questions.length) * 100);
- 481 │ 
- 482 │   return (
- 483 │   return (
-     ·   ──────
- 484 │     <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
- 485 │       <AnimatePresence>
- 486 │         {isLoading && <Loader key="loader" />}
-     ╰────
-
-Caused by:
-    Syntax Error
-
-Import trace for requested module:
-./app/page.jsx
-[00:11:03.143] Server  LOG      ○ Compiling /_error ...
-[00:11:03.998] Browser ERROR   ./app/page.jsx
-Error:   × Expression expected
-     ╭─[/home/anasmasama/Desktop/Projects/P-prac/app/page.jsx:483:1]
- 480 │   const progressPercent = Math.round(((questionIndex + 1) / questions.length) * 100);
- 481 │ 
- 482 │   return (
- 483 │   return (
-     ·   ──────
- 484 │     <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
- 485 │       <AnimatePresence>
- 486 │         {isLoading && <Loader key="loader" />}
-     ╰────
-
-Caused by:
-    Syntax Error
-
-Import trace for requested module:
-./app/page.jsx
-[00:11:04.012] Server  ERROR    ⨯ ./app/page.jsx
-Error:   × Expression expected
-     ╭─[/home/anasmasama/Desktop/Projects/P-prac/app/page.jsx:483:1]
- 480 │   const progressPercent = Math.round(((questionIndex + 1) / questions.length) * 100);
- 481 │ 
- 482 │   return (
- 483 │   return (
-     ·   ──────
- 484 │     <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
- 485 │       <AnimatePresence>
- 486 │         {isLoading && <Loader key="loader" />}
-     ╰────
-
-Caused by:
-    Syntax Error
-
-Import trace for requested module:
-./app/page.jsx
-[00:11:05.315] Browser ERROR   uncaughtError: ModuleBuildError: Module build failed (from ./node_modules/next/dist/build/webpack/loaders/next-swc-loader.js):
-Error:   × Expression expected
-     ╭─[/home/anasmasama/Desktop/Projects/P-prac/app/page.jsx:483:1]
- 480 │   const progressPercent = Math.round(((questionIndex + 1) / questions.length) * 100);
- 481 │ 
- 482 │   return (
- 483 │   return (
-     ·   ──────
- 484 │     <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
- 485 │       <AnimatePresence>
- 486 │         {isLoading && <Loader key="loader" />}
-     ╰────
-
-
-Caused by:
-    Syntax Error
-[00:11:05.418] Browser ERROR   ./app/page.jsx
-Error:   × Expression expected
-     ╭─[/home/anasmasama/Desktop/Projects/P-prac/app/page.jsx:483:1]
- 480 │   const progressPercent = Math.round(((questionIndex + 1) / questions.length) * 100);
- 481 │ 
- 482 │   return (
- 483 │   return (
-     ·   ──────
- 484 │     <div className={`min-h-screen flex flex-col items-center px-2 sm:px-6 md:px-8 py-6 transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-200' : 'bg-gray-50 text-gray-900'}`}>
- 485 │       <AnimatePresence>
- 486 │         {isLoading && <Loader key="loader" />}
-     ╰────
-
-Caused by:
-    Syntax Error
-[00:11:58.985] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:12:00.972] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:12:02.260] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:12:03.822] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:12:05.327] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:12:06.446] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:12:08.134] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[00:12:10.686] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:12:10.942] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:12:10.942] Browser LOG     Detected: go (fallback)
-[00:12:10.942] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:12:10.942] Browser LOG     Detected: go (fallback)
-[00:17:26.964] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:26.964] Browser LOG     Detected: go (fallback)
-[00:17:27.802] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:27.803] Browser LOG     Detected: go (fallback)
-[00:17:27.975] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:27.976] Browser LOG     Detected: go (fallback)
-[00:17:28.218] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:28.218] Browser LOG     Detected: go (fallback)
-[00:17:28.407] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:28.407] Browser LOG     Detected: go (fallback)
-[00:17:28.636] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:28.636] Browser LOG     Detected: go (fallback)
-[00:17:28.818] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:28.818] Browser LOG     Detected: go (fallback)
-[00:17:28.940] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:28.940] Browser LOG     Detected: go (fallback)
-[00:17:30.221] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:30.221] Browser LOG     Detected: go (fallback)
-[00:17:30.481] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:30.481] Browser LOG     Detected: go (fallback)
-[00:17:30.675] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:30.675] Browser LOG     Detected: go (fallback)
-[00:17:30.903] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:30.903] Browser LOG     Detected: go (fallback)
-[00:17:31.082] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:31.082] Browser LOG     Detected: go (fallback)
-[00:17:31.693] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:31.693] Browser LOG     Detected: go (fallback)
-[00:17:32.280] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:32.280] Browser LOG     Detected: go (fallback)
-[00:17:32.569] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:32.569] Browser LOG     Detected: go (fallback)
-[00:17:32.818] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:32.819] Browser LOG     Detected: go (fallback)
-[00:17:32.941] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:32.941] Browser LOG     Detected: go (fallback)
-[00:17:33.125] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:33.125] Browser LOG     Detected: go (fallback)
-[00:17:36.478] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:36.478] Browser LOG     Detected: go (fallback)
-[00:17:36.478] Browser LOG     Detecting language for: package piscine
-
-fun...
-[00:17:36.478] Browser LOG     Detected: go (fallback)
+[00:06:11.707] Browser LOG     Detected: go (fallback)
