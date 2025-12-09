@@ -2,7 +2,6 @@
   "version": 1,
   "config": {
     "env": {},
-    "webpack": null,
     "typescript": {
       "ignoreBuildErrors": false
     },
@@ -99,7 +98,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/home/dell/Desktop/P-prac",
+    "outputFileTracingRoot": "/home/anasmasama/Desktop/Projects/P-prac",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -157,7 +156,7 @@
       "proxyPrefetch": "flexible",
       "optimisticClientCache": true,
       "manualClientBasePath": false,
-      "cpus": 3,
+      "cpus": 7,
       "memoryBasedWorkersCount": false,
       "imgOptConcurrency": null,
       "imgOptTimeoutInSeconds": 7,
@@ -289,11 +288,11 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "/home/dell/Desktop/P-prac"
+      "root": "/home/anasmasama/Desktop/Projects/P-prac"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "/home/dell/Desktop/P-prac",
+  "appDir": "/home/anasmasama/Desktop/Projects/P-prac",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",
